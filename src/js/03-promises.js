@@ -10,9 +10,14 @@ formEl.addEventListener("submit", (evt) => {
     const delayStep = parseInt(delayStepInput.value);
     const firstDelay = parseInt(firstDelayInput.value);
 
+    if(delayStep < 0 || firstDelay < 0 || amountPromises <= 0){
+      console.log("values must be greater than zero");
+      return
+    }
+
     for (let step = 0; step < amountPromises; step++) {
         const promiseDelay = step === 0 ? firstDelay : firstDelay + step * delayStep;
-    
+``
         createPromise(step, promiseDelay)
   .then(({ position, delay }) => {
     console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
@@ -20,6 +25,7 @@ formEl.addEventListener("submit", (evt) => {
   .catch(({ position, delay }) => {
     console.log(`❌ Rejected promise ${position} in ${delay}ms`);
   }); 
+
     } 
 });
 

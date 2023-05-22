@@ -4,7 +4,7 @@ import "flatpickr/dist/flatpickr.min.css";
 import Notiflix from 'notiflix';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 
-const importText = document.querySelector("#datetime-picker");
+const inputEl = document.querySelector("#datetime-picker");
 const startBtn = document.querySelector(`button[data-start]`);
 const daysEl = document.querySelector(`span[data-days]`);
 const hoursEl = document.querySelector(`span[data-hours]`);
@@ -27,14 +27,15 @@ const options = {
         startBtn.setAttribute("disabled", "");  
     },
   };
-  flatpickr(importText, options)
+  flatpickr(inputEl, options)
 
 
 startBtn.addEventListener("click", () => {
   startBtn.setAttribute("disabled", "");
+  inputEl.setAttribute("disabled", "")
     
   const countdownTimer = setInterval(() => {
-    let timerTime = new Date(importText.value).getTime() - new Date();
+    let timerTime = new Date(inputEl.value).getTime() - new Date();
     
     timerTime = timerTime - 1;
     
@@ -53,14 +54,16 @@ function updateMarkupTimer(timerTime) {
 function checkTimerCompletion(countdownTimer) {
   const isCompleted = daysEl.textContent === "00" && hoursEl.textContent === "00" && minutesEl.textContent === "00" && secondsEl.textContent === "00";
   
-  if(isCompleted)
-    {
+  if(isCompleted){
+      clearInterval(countdownTimer);
       Report.success(
         'Timer has finished its work',
         'You can choose a new date',
         'Okay',
+        function() {
+          location.reload(); 
+        }
         );
-      clearInterval(countdownTimer);
     }
 }
 
